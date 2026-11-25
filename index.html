@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XIII Mostra de Projetos Integradores — Avaliação</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue: #1a4f7a;
+    --blue-light: #e8f1f8;
+    --blue-mid: #2e6da4;
+    --gray-50: #f8f9fa;
+    --gray-100: #f1f3f4;
+    --gray-200: #e2e5e9;
+    --gray-400: #9aa3ad;
+    --gray-600: #5a6472;
+    --gray-900: #1c2530;
+    --radius: 10px;
+  }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f0f4f8;
+    color: var(--gray-900);
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+  }
+  .page { max-width: 780px; margin: 0 auto; }
+
+  header {
+    background: var(--blue);
+    color: white;
+    border-radius: var(--radius);
+    padding: 2rem 2.5rem;
+    margin-bottom: 1.5rem;
+  }
+  header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.55rem;
+    font-weight: 400;
+    line-height: 1.3;
+    margin-bottom: .35rem;
+  }
+  header p { font-size: .83rem; opacity: .72; }
+
+  .scale-bar {
+    display: flex;
+    gap: 6px;
+    background: white;
+    border-radius: var(--radius);
+    padding: 11px 16px;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--gray-200);
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .scale-bar span { font-size: .78rem; color: var(--gray-600); margin-right: 4px; font-weight: 500; }
+  .scale-item { display: flex; align-items: center; gap: 5px; font-size: .78rem; color: var(--gray-600); }
+  .scale-dot {
+    width: 20px; height: 20px; border-radius: 50%;
+    font-size: .72rem; font-weight: 600;
+    display: flex; align-items: center; justify-content: center; color: white;
+  }
+  .d1{background:#c0392b} .d2{background:#e67e22} .d3{background:#f1c40f;color:#555}
+  .d4{background:#27ae60} .d5{background:#1a4f7a}
+  .sep { color: var(--gray-400); margin: 0 2px; }
+
+  .card {
+    background: white;
+    border-radius: var(--radius);
+    border: 1px solid var(--gray-200);
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+  }
+  .card-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 13px 20px;
+    background: var(--blue); color: white;
+  }
+  .card-header h2 { font-size: .93rem; font-weight: 500; }
+  .card-header .badge { font-size: .7rem; background: rgba(255,255,255,.2); padding: 2px 9px; border-radius: 20px; }
+
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--gray-100); }
+  .info-grid .full { grid-column: 1/-1; }
+  .field { background: white; padding: 12px 20px; }
+  .field label {
+    display: block; font-size: .7rem; font-weight: 500;
+    color: var(--gray-400); text-transform: uppercase;
+    letter-spacing: .05em; margin-bottom: 5px;
+  }
+  .field input, .field select {
+    width: 100%; border: none; outline: none;
+    font-family: 'DM Sans', sans-serif; font-size: .9rem;
+    color: var(--gray-900); background: transparent; padding: 0; cursor: pointer;
+  }
+  .field input::placeholder { color: var(--gray-400); }
+
+  .criterion {
+    display: grid; grid-template-columns: 1fr auto;
+    align-items: center; gap: 16px;
+    padding: 13px 20px;
+    border-bottom: 1px solid var(--gray-100);
+    transition: background .12s;
+  }
+  .criterion:last-child { border-bottom: none; }
+  .criterion:hover { background: var(--gray-50); }
+  .crit-label { font-size: .87rem; line-height: 1.4; }
+  .crit-hint { font-size: .74rem; color: var(--gray-400); margin-top: 2px; }
+  .req { color: #c0392b; margin-left: 2px; }
+
+  .score-btns { display: flex; gap: 4px; flex-shrink: 0; }
+  .score-btns button {
+    width: 30px; height: 30px; border-radius: 50%;
+    border: 1.5px solid var(--gray-200);
+    background: white; color: var(--gray-600);
+    font-size: .8rem; font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer; transition: all .12s;
+  }
+  .score-btns button:hover { border-color: var(--blue-mid); color: var(--blue-mid); }
+  .score-btns button.sel-1 { background:#c0392b; border-color:#c0392b; color:white; }
+  .score-btns button.sel-2 { background:#e67e22; border-color:#e67e22; color:white; }
+  .score-btns button.sel-3 { background:#f1c40f; border-color:#f1c40f; color:#333; }
+  .score-btns button.sel-4 { background:#27ae60; border-color:#27ae60; color:white; }
+  .score-btns button.sel-5 { background:#1a4f7a; border-color:#1a4f7a; color:white; }
+
+  .global-box { padding: 14px 20px; }
+  .global-desc { font-size: .74rem; color: var(--gray-400); line-height: 1.8; margin: 6px 0 10px; }
+
+  .section-avg {
+    display: flex; justify-content: flex-end; align-items: center; gap: 8px;
+    padding: 9px 20px; background: var(--blue-light);
+    font-size: .8rem; color: var(--blue); font-weight: 500;
+  }
+  .section-avg .val { font-size: 1.05rem; font-weight: 600; }
+
+  textarea {
+    width: 100%; min-height: 100px; resize: vertical;
+    border: none; outline: none;
+    padding: 14px 20px;
+    font-family: 'DM Sans', sans-serif; font-size: .88rem;
+    color: var(--gray-900); background: white;
+  }
+  textarea::placeholder { color: var(--gray-400); }
+
+  .result-card {
+    background: white; border-radius: var(--radius);
+    border: 2px solid var(--blue); margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+  .result-header { background: var(--blue); color: white; padding: 11px 20px; font-size: .88rem; font-weight: 500; }
+  .result-body { padding: 18px 20px; }
+  .dim-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 14px; }
+  .dim-box { text-align: center; }
+  .dim-box .dval { font-size: 1.25rem; font-weight: 600; color: var(--blue); }
+  .dim-box .dlbl { font-size: .66rem; color: var(--gray-400); margin-top: 2px; line-height: 1.3; }
+  .final-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 12px; border-top: 1px solid var(--gray-200);
+  }
+  .final-label { font-size: .86rem; color: var(--gray-600); }
+  .final-right { display: flex; align-items: center; gap: 10px; }
+  .conceito-badge { font-size: .76rem; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
+  .final-nota { font-size: 2rem; font-weight: 600; color: var(--blue); }
+  .progress { height: 4px; background: var(--gray-100); border-radius: 2px; margin-top: 10px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 2px; background: var(--blue); transition: width .4s ease; }
+
+  .actions { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; }
+  .btn {
+    padding: 9px 20px; border-radius: var(--radius);
+    border: 1.5px solid var(--gray-200); background: white;
+    color: var(--gray-900); font-family: 'DM Sans', sans-serif;
+    font-size: .86rem; font-weight: 500; cursor: pointer; transition: all .15s;
+  }
+  .btn:hover { background: var(--gray-50); border-color: var(--gray-400); }
+  .btn-primary { background: var(--blue); color: white; border-color: var(--blue); }
+  .btn-primary:hover { background: var(--blue-mid); border-color: var(--blue-mid); }
+  .btn-print { background: #1e7e4a; color: white; border-color: #1e7e4a; }
+  .btn-print:hover { opacity: .88; }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .actions { display: none; }
+    .score-btns button { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+  @media (max-width: 580px) {
+    .info-grid { grid-template-columns: 1fr; }
+    .dim-grid { grid-template-columns: repeat(3, 1fr); }
+    header { padding: 1.4rem; }
+    header h1 { font-size: 1.25rem; }
+    .criterion { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <h1>Avaliação de trabalhos da XIII Mostra de Projetos Integradores — 2026.2</h1>
+    <p>Nota calculada automaticamente com base nos critérios abaixo</p>
+  </header>
+
+  <div class="scale-bar">
+    <span>Escala:</span>
+    <div class="scale-item"><span class="scale-dot d1">1</span> Insuficiente</div>
+    <span class="sep">·</span>
+    <div class="scale-item"><span class="scale-dot d2">2</span> Insuficiente</div>
+    <span class="sep">·</span>
+    <div class="scale-item"><span class="scale-dot d3">3</span> Regular</div>
+    <span class="sep">·</span>
+    <div class="scale-item"><span class="scale-dot d4">4</span> Bom</div>
+    <span class="sep">·</span>
+    <div class="scale-item"><span class="scale-dot d5">5</span> Excelente</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h2>Identificação</h2></div>
+    <div class="info-grid">
+      <div class="field">
+        <label>Avaliadora <span class="req">*</span></label>
+        <select id="sel-avaliadora" onchange="toggleOutro()">
+          <option value="">Selecione...</option>
+          <option>Ana Cibele</option>
+          <option>Ana Karine</option>
+          <option>Débora Thais</option>
+          <option>Ingrid Bispo</option>
+          <option value="outro">Outro</option>
+        </select>
+      </div>
+      <div class="field full" id="campo-outro" style="display:none">
+        <label>Nome do(a) avaliador(a) <span class="req">*</span></label>
+        <input type="text" id="input-outro" placeholder="Digite o nome completo">
+      </div>
+      <div class="field">
+        <label>PI avaliado <span class="req">*</span></label>
+        <select id="sel-pi">
+          <option value="">Selecione...</option>
+          <option>Educação Alimentar e Nutricional</option>
+          <option>Microbiologia, Higiene, Controle e Legislação de Alimentos</option>
+          <option>Nutrição, Ciência Profissão e Ética</option>
+          <option>Processos Psicológicos em Saúde</option>
+          <option>Saúde Coletiva e Epidemiologia</option>
+          <option>UAN</option>
+          <option>Semi - Avaliação Nutricional</option>
+          <option>Semi - Educação Alimentar e Nutricional</option>
+          <option>Semi - Microbiologia, Higiene e Controle de Qualidade</option>
+          <option>Semi - Parasitologia</option>
+          <option>Semi - UAN</option>
+          <option>Semi - Processos Psicológicos em Saúde</option>
+          <option>Semi - Saúde Coletiva e Epidemiologia</option>
+        </select>
+      </div>
+      <div class="field full">
+        <label>Título do trabalho <span class="req">*</span></label>
+        <input type="text" id="input-titulo" placeholder="Título completo do projeto">
+      </div>
+      <div class="field full">
+        <label>Número da equipe <span class="req">*</span></label>
+        <input type="text" id="input-lider" inputmode="numeric" placeholder="Ex.: 05">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h2>1. Conteúdo e fundamentação</h2><span class="badge">25%</span></div>
+    <div class="criterion">
+      <div>
+        <div class="crit-label">Embasamento técnico e científico <span class="req">*</span></div>
+        <div class="crit-hint">Uso adequado de fontes, referências e conceitos da área</div>
+      </div>
+      <div class="score-btns">
+        <button type="button" onclick="marcar('s1','c1',1,this.parentNode)">1</button>
+        <button type="button" onclick="marcar('s1','c1',2,this.parentNode)">2</button>
+        <button type="button" onclick="marcar('s1','c1',3,this.parentNode)">3</button>
+        <button type="button" onclick="marcar('s1','c1',4,this.parentNode)">4</button>
+        <button type="button" onclick="marcar('s1','c1',5,this.parentNode)">5</button>
+      </div>
+    </div>
+    <div class="criterion">
+      <div>
+        <div class="crit-label">Coerência entre problema, objetivo e produto <span class="req">*</span></div>
+        <div class="crit-hint">O produto responde ao problema identificado?</div>
+      </div>
+      <div class="score-btns">
+        <button type="button" onclick="marcar('s1','c2',1,this.parentNode)">1</button>
+        <button type="button" onclick="marcar('s1','c2',2,this.parentNode)">2</button>
+        <button type="button" onclick="marcar('s1','c2',3,this.parentNode)">3</button>
+        <button type="button" onclick="marcar('s1','c2',4,this.parentNode)">4</button>
+        <button type="button" onclick="marcar('s1','c2',5,this.parentNode)">5</button>
+      </div>
+    </div>
+    <div class="criterion" style="border-bottom:none">
+      <div>
+        <div class="crit-label">Originalidade e contribuição <span class="req">*</span></div>
+        <div class="crit-hint">Traz perspectiva própria ou soluções inovadoras</div>
+      </div>
+      <div class="score-btns">
+        <button type="button" onclick="marcar('s1','c3',1,this.parentNode)">1</button>
+        <button type="button" onclick="marcar('s1','c3',2,this.parentNode)">2</button>
+        <button type="button" onclick="marcar('s1','c3',3,this.parentNode)">3</button>
+        <button type="button" onclick="marcar('s1','c3',4,this.parentNode)">4</button>
+        <button type="button" onclick="marcar('s1','c3',5,this.parentNode)">5</button>
+      </div>
+    </div>
+    <div class="section-avg" id="avg-s1">Média da seção: <span class="val">—</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h2>2. Qualidade do produto final</h2><span class="badge">25%</span></div>
+    <div class="criterion">
+      <div>
+        <div class="crit-label">O produto final está adequado? seja ele banner, vídeo ou cartilha <span class="req">*</span></div>
+        <div class="crit-hint">Adequação ao público e ao objetivo do projeto</div>
+      </div>
+      <div class="score-btns">
+        <button type="button" onclick="marcar('s2','c1',1,this.parentNode)">1</button>
+        <button type="button" onclick="marcar('s2','c1',2,this.parentNode)">2</button>
+        <button type="button" onclick="marcar('s2','c1',3,this.parentNode)">3</button>
+        <button type="button" onclick="marcar('s2','c1',4,this.parentNode)">4</button>
+        <button type="button" onclick="marcar('s2','c1',5,this.parentNode)">5</button>
+      </div>
+    </div>
+    <div class="criterion" style="border-bottom:none">
+      <div>
+        <div class="crit-label">Qualidade estética e técnica <span class="req">*</span></div>
+        <div class="crit-hint">Visual, áudio, diagramação — conforme o tipo de produto</div>
+      </div>
+      <div class="score-btns">
+        <button type="button" onclick="marcar('s2','c2',1,this.parentNode)">1</button>
+        <button type="button" onclick="marcar('s2','c2',2,this.parentNode)">2</button>
+        <button type="button" onclick="marcar('s2','c2',3,this.parentNode)">3</button>
+        <button type="button" onclick="marcar('s2','c2',4,this.parentNode)">4</button>
+        <button type="button" onclick="marcar('s2','c2',5,this.parentNode)">5</button>
+      </div>
+    </div>
+    <div class="section-avg" id="avg-s2">Média da seção: <span class="val">—</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h2>3. Impacto e relevância social</h2><span class="badge">20%</span></div>
+    <div class="criterion">
+      <div>
+        <div class="crit-label">Pertinência do tema para a comunidade <span class="req">*</span></div>
+        <div class="crit-hint">O problema abordado é real e relevante para o contexto local</div>
+      </div>
+      <div class="score-btns">
+        <button type="button" onclick="marcar('s3','c1',1,this.parentNode)">1</button>
+        <button type="button" onclick="marcar('s3','c1',2,this.parentNode)">2</button>
+        <button type="button" onclick="marcar('s3','c1',3,this.parentNode)">3</button>
+        <button type="button" onclick="marcar('s3','c1',4,this.parentNode)">4</button>
+        <button type="button" onclick="marcar('s3','c1',5,this.parentNode)">5</button>
+      </div>
+    </div>
+    <div class="criterion">
+      <div>
+        <div class="crit-label">Envolvimento da comunidade no processo <span class="req">*</span></div>
+        <div class="crit-hint">Houve escuta, diagnóstico participativo ou interação direta?</div>
+      </div>
+      <div class="score-btns">
+        <button type="button" onclick="marcar('s3','c2',1,this.parentNode)">1</button>
+        <button type="button" onclick="marcar('s3','c2',2,this.parentNode)">2</button>
+        <button type="button" onclick="marcar('s3','c2',3,this.parentNode)">3</button>
+        <button type="button" onclick="marcar('s3','c2',4,this.parentNode)">4</button>
+        <button type="button" onclick="marcar('s3','c2',5,this.parentNode)">5</button>
+      </div>
+    </div>
+    <div class="criterion" style="border-bottom:none">
+      <div>
+        <div class="crit-label">Teve um ganho/retorno para a sociedade com esse projeto? <span class="req">*</span></div>
+        <div class="crit-hint">O projeto gerou ou tem potencial de gerar mudança real?</div>
+      </div>
+      <div class="score-btns">
+        <button type="button" onclick="marcar('s3','c3',1,this.parentNode)">1</button>
+        <button type="button" onclick="marcar('s3','c3',2,this.parentNode)">2</button>
+        <button type="button" onclick="marcar('s3','c3',3,this.parentNode)">3</button>
+        <button type="button" onclick="marcar('s3','c3',4,this.parentNode)">4</button>
+        <button type="button" onclick="marcar('s3','c3',5,this.parentNode)">5</button>
+      </div>
+    </div>
+    <div class="section-avg" id="avg-s3">Média da seção: <span class="val">—</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h2>4. Apresentação oral</h2><span class="badge">20%</span></div>
+    <div class="criterion">
+      <div>
+        <div class="crit-label">Domínio do conteúdo <span class="req">*</span></div>
+        <div class="crit-hint">Responde perguntas com segurança e clareza</div>
+      </div>
+      <div class="score-btns">
+        <button type="button" onclick="marcar('s4','c1',1,this.parentNode)">1</button>
+        <button type="button" onclick="marcar('s4','c1',2,this.parentNode)">2</button>
+        <button type="button" onclick="marcar('s4','c1',3,this.parentNode)">3</button>
+        <button type="button" onclick="marcar('s4','c1',4,this.parentNode)">4</button>
+        <button type="button" onclick="marcar('s4','c1',5,this.parentNode)">5</button>
+      </div>
+    </div>
+    <div class="criterion">
+      <div>
+        <div class="crit-label">Clareza e objetividade na exposição <span class="req">*</span></div>
+        <div class="crit-hint">Organização do discurso, sem redundâncias ou contradições</div>
+      </div>
+      <div class="score-btns">
+        <button type="button" onclick="marcar('s4','c2',1,this.parentNode)">1</button>
+        <button type="button" onclick="marcar('s4','c2',2,this.parentNode)">2</button>
+        <button type="button" onclick="marcar('s4','c2',3,this.parentNode)">3</button>
+        <button type="button" onclick="marcar('s4','c2',4,this.parentNode)">4</button>
+        <button type="button" onclick="marcar('s4','c2',5,this.parentNode)">5</button>
+      </div>
+    </div>
+    <div class="criterion" style="border-bottom:none">
+      <div>
+        <div class="crit-label">Postura, tempo e dinâmica <span class="req">*</span></div>
+        <div class="crit-hint">Uso adequado do tempo, engajamento da equipe</div>
+      </div>
+      <div class="score-btns">
+        <button type="button" onclick="marcar('s4','c3',1,this.parentNode)">1</button>
+        <button type="button" onclick="marcar('s4','c3',2,this.parentNode)">2</button>
+        <button type="button" onclick="marcar('s4','c3',3,this.parentNode)">3</button>
+        <button type="button" onclick="marcar('s4','c3',4,this.parentNode)">4</button>
+        <button type="button" onclick="marcar('s4','c3',5,this.parentNode)">5</button>
+      </div>
+    </div>
+    <div class="section-avg" id="avg-s4">Média da seção: <span class="val">—</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h2>5. Processo e trabalho em equipe</h2><span class="badge">10%</span></div>
+    <div class="criterion">
+      <div>
+        <div class="crit-label">Evidência de engajamento ao longo do semestre ou ao longo do mês no caso do EaD <span class="req">*</span></div>
+        <div class="crit-hint">Desenvolvimento gradual; não apenas entrega final</div>
+      </div>
+      <div class="score-btns">
+        <button type="button" onclick="marcar('s5','c1',1,this.parentNode)">1</button>
+        <button type="button" onclick="marcar('s5','c1',2,this.parentNode)">2</button>
+        <button type="button" onclick="marcar('s5','c1',3,this.parentNode)">3</button>
+        <button type="button" onclick="marcar('s5','c1',4,this.parentNode)">4</button>
+        <button type="button" onclick="marcar('s5','c1',5,this.parentNode)">5</button>
+      </div>
+    </div>
+    <div class="global-box">
+      <div class="crit-label">Avalie globalmente a equipe <span class="req">*</span></div>
+      <div class="global-desc">
+        5 = Excelente (sem falhas relevantes)<br>
+        4 = Muito bom (pequenas falhas)<br>
+        3 = Bom (falhas moderadas)<br>
+        2 = Insuficiente<br>
+        1 = Muito fraco / incompleto
+      </div>
+      <div class="score-btns">
+        <button type="button" onclick="marcar('s5','c2',1,this.parentNode)">1</button>
+        <button type="button" onclick="marcar('s5','c2',2,this.parentNode)">2</button>
+        <button type="button" onclick="marcar('s5','c2',3,this.parentNode)">3</button>
+        <button type="button" onclick="marcar('s5','c2',4,this.parentNode)">4</button>
+        <button type="button" onclick="marcar('s5','c2',5,this.parentNode)">5</button>
+      </div>
+    </div>
+    <div class="section-avg" id="avg-s5">Média da seção: <span class="val">—</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" style="background:var(--gray-600)"><h2>Observações gerais e pontos de destaque</h2></div>
+    <textarea placeholder="Registre aqui o que chamou atenção, positivo ou negativo, que não foi capturado nos critérios acima..."></textarea>
+  </div>
+
+  <div class="result-card">
+    <div class="result-header">Resultado da avaliação</div>
+    <div class="result-body">
+      <div class="dim-grid">
+        <div class="dim-box"><div class="dval" id="d1">—</div><div class="dlbl">Conteúdo</div></div>
+        <div class="dim-box"><div class="dval" id="d2">—</div><div class="dlbl">Produto</div></div>
+        <div class="dim-box"><div class="dval" id="d3">—</div><div class="dlbl">Impacto</div></div>
+        <div class="dim-box"><div class="dval" id="d4">—</div><div class="dlbl">Apresentação</div></div>
+        <div class="dim-box"><div class="dval" id="d5">—</div><div class="dlbl">Equipe</div></div>
+      </div>
+      <div class="progress"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+      <div class="final-row">
+        <span class="final-label">Nota final (0–10)</span>
+        <div class="final-right">
+          <span class="conceito-badge" id="badge" style="background:#f1f3f4;color:#9aa3ad">—</span>
+          <span class="final-nota" id="nota-final">—</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn" onclick="limpar()">Limpar tudo</button>
+    <button class="btn btn-print" onclick="window.print()">Imprimir / salvar PDF</button>
+    <button class="btn btn-primary" onclick="copiarResumo()">Copiar resumo</button>
+    <button id="btn-enviar" class="btn btn-primary" onclick="enviar()">Enviar avaliação</button>
+  </div>
+
+</div>
+<script>
+const sec = [
+  { id:"s1", cs:["c1","c2","c3"], p:0.25, el:"d1" },
+  { id:"s2", cs:["c1","c2"],      p:0.25, el:"d2" },
+  { id:"s3", cs:["c1","c2","c3"], p:0.20, el:"d3" },
+  { id:"s4", cs:["c1","c2","c3"], p:0.20, el:"d4" },
+  { id:"s5", cs:["c1","c2"],      p:0.10, el:"d5" },
+];
+const sc = {};
+sec.forEach(s => s.cs.forEach(c => sc[s.id+"_"+c]=0));
+
+function marcar(sid, cid, n, el) {
+  sc[sid+"_"+cid]=n;
+  el.querySelectorAll("button").forEach(b => {
+    b.className = parseInt(b.textContent) <= n ? "sel-"+n : "";
+  });
+  atualizar();
+}
+
+function med(s) {
+  const v = s.cs.map(c=>sc[s.id+"_"+c]).filter(x=>x>0);
+  return v.length ? v.reduce((a,b)=>a+b,0)/v.length : null;
+}
+
+function atualizar() {
+  let total=0, pt=0;
+  sec.forEach(s => {
+    const m = med(s);
+    document.getElementById("avg-"+s.id).querySelector(".val").textContent = m!==null ? m.toFixed(2) : "—";
+    document.getElementById(s.el).textContent = m!==null ? (m*2).toFixed(1) : "—";
+    if (m!==null) { total+=m*s.p; pt+=s.p; }
+  });
+  const nota = pt>0 ? (total/pt)*2 : null;
+  const nEl = document.getElementById("nota-final");
+  const badge = document.getElementById("badge");
+  if (nota!==null) {
+    nEl.textContent = nota.toFixed(1);
+    document.getElementById("prog").style.width = Math.round((nota/10)*100)+"%";
+    if (nota>=9)      { badge.textContent="Excelente";    badge.style.cssText="background:#eaf5ef;color:#1e7e4a;"; }
+    else if (nota>=7) { badge.textContent="Bom";          badge.style.cssText="background:#e8f1f8;color:#1a4f7a;"; }
+    else if (nota>=5) { badge.textContent="Regular";      badge.style.cssText="background:#fef9ec;color:#d68910;"; }
+    else              { badge.textContent="Insuficiente"; badge.style.cssText="background:#fdecea;color:#c0392b;"; }
+  } else {
+    nEl.textContent="—"; badge.textContent="—";
+    badge.style.cssText="background:#f1f3f4;color:#9aa3ad;";
+    document.getElementById("prog").style.width="0%";
+  }
+}
+
+function limpar() {
+  Object.keys(sc).forEach(k=>sc[k]=0);
+  document.querySelectorAll(".score-btns button").forEach(b=>b.className="");
+  sec.forEach(s=>{
+    document.getElementById("avg-"+s.id).querySelector(".val").textContent="—";
+    document.getElementById(s.el).textContent="—";
+  });
+  document.getElementById("nota-final").textContent="—";
+  document.getElementById("badge").textContent="—";
+  document.getElementById("badge").style.cssText="background:#f1f3f4;color:#9aa3ad;";
+  document.getElementById("prog").style.width="0%";
+  document.querySelectorAll("input,textarea").forEach(el=>el.value="");
+  document.querySelectorAll("select").forEach(el=>el.selectedIndex=0);
+}
+
+function copiarResumo() {
+  const nota = document.getElementById("nota-final").textContent;
+  const conceito = document.getElementById("badge").textContent;
+  const labels = ["1. Conteúdo e fundamentação","2. Qualidade do produto final","3. Impacto e relevância social","4. Apresentação oral","5. Processo e trabalho em equipe"];
+  const linhas = ["XIII Mostra de Projetos Integradores (2026.2) — Resumo de Avaliação",""];
+  sec.forEach((s,i) => {
+    const m=med(s);
+    linhas.push(labels[i]+": "+(m!==null?(m*2).toFixed(1)+"/10":"—"));
+  });
+  linhas.push("","Nota final: "+nota+"/10 — Conceito: "+conceito);
+  navigator.clipboard.writeText(linhas.join("\n"))
+    .then(()=>alert("Resumo copiado!"))
+    .catch(()=>alert("Use Ctrl+A e Ctrl+C para copiar manualmente."));
+}
+
+function toggleOutro() {
+  const sel = document.getElementById('sel-avaliadora');
+  const campo = document.getElementById('campo-outro');
+  campo.style.display = sel.value === 'outro' ? 'block' : 'none';
+  if (sel.value !== 'outro') document.getElementById('input-outro').value = '';
+}
+
+async function enviar() {
+  const email = ""; // e-mail não é mais coletado
+  const sel = document.getElementById('sel-avaliadora');
+  const avaliadora = sel.value === 'outro'
+    ? document.getElementById('input-outro').value.trim()
+    : sel.value;
+  const pi = document.getElementById('sel-pi').value;
+  const titulo = document.getElementById('input-titulo').value.trim();
+  const lider = document.getElementById('input-lider').value.trim(); // agora guarda o número da equipe
+  const nota = document.getElementById("nota-final").textContent;
+  const observacoes = document.querySelector("textarea").value.trim();
+
+  if (!avaliadora || !pi || !titulo || !lider) {
+    alert("Preencha todos os campos de identificação antes de enviar.");
+    return;
+  }
+  if (sel.value === 'outro' && !document.getElementById('input-outro').value.trim()) {
+    alert("Digite o nome do(a) avaliador(a).");
+    return;
+  }
+  if (nota === "—") {
+    alert("Preencha ao menos alguns critérios antes de enviar.");
+    return;
+  }
+
+  // Nomes dos campos batem exatamente com o que o Apps Script espera
+  const payload = {
+    email, avaliadora, pi, titulo, lider,
+    obs: observacoes,
+    emb: sc["s1_c1"],
+    coe: sc["s1_c2"],
+    ori: sc["s1_c3"],
+    ade: sc["s2_c1"],
+    est: sc["s2_c2"],
+    per: sc["s3_c1"],
+    env: sc["s3_c2"],
+    ret: sc["s3_c3"],
+    dom: sc["s4_c1"],
+    cla: sc["s4_c2"],
+    pos: sc["s4_c3"],
+    eng: sc["s5_c1"],
+    glo: sc["s5_c2"],
+  };
+
+  const btn = document.getElementById("btn-enviar");
+  btn.textContent = "Enviando…";
+  btn.disabled = true;
+
+  try {
+    await fetch("https://script.google.com/macros/s/AKfycbyxQcKqBVpbenhlQILmcV0G5YzKnnNsu67FeYQQFGncZi-IRCk3RyiwAESvxQI1o7eC/exec", {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    btn.textContent = "✓ Enviado!";
+    btn.style.background = "#1e7e4a";
+    btn.style.borderColor = "#1e7e4a";
+    setTimeout(() => {
+      btn.textContent = "Enviar avaliação";
+      btn.disabled = false;
+      btn.style.background = "";
+      btn.style.borderColor = "";
+    }, 4000);
+  } catch(e) {
+    alert("Erro ao enviar. Verifique sua conexão e tente novamente.");
+    btn.textContent = "Enviar avaliação";
+    btn.disabled = false;
+  }
+}
+</script>
+</body>
+</html>
